@@ -34,6 +34,8 @@ void loop()
 if (strcmp(rx, "START!") == 0) 
 {
   Serial.println("ACK");
+  memset(rx,'0',sizeof(rx));
+  i = 0;
 }
   
   
