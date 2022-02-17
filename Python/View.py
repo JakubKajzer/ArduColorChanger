@@ -38,21 +38,16 @@ class AppView:
         self.variable = StringVar(self.window)
 
         ttk.Label(self.frm, text="Red: ").grid(column=0, row=0)
-
-        AppView.sliderRed = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="RED",
-        command=partial(Controller.AppController.updateValue,
-        AppView.sliderRed.get(),
-        AppView.sliderGreen.get(),
-        AppView.sliderBlue.get()))
+        AppView.sliderRed = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="RED", command=Controller.AppController.updateValue)
         
         AppView.sliderRed.grid(column=1, row=0)
 
         ttk.Label(self.frm, text="Green: ").grid(column=0, row=1)
-        AppView.sliderGreen = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="GREEN")
+        AppView.sliderGreen = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="GREEN", command=Controller.AppController.updateValue)
         AppView.sliderGreen.grid(column=1, row=1)
 
         ttk.Label(self.frm, text="Blue: ").grid(column=0, row=2)
-        AppView.sliderBlue = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="BLUE")
+        AppView.sliderBlue = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="BLUE", command=Controller.AppController.updateValue)
         AppView.sliderBlue.grid(column=1, row=2)
 
         self.refreshPorts()
@@ -62,8 +57,16 @@ class AppView:
         AppView.droplist.grid(column=4, row=0)
         AppView.connectButton = Button(self.frm, text="Connect", command=partial(Controller.AppController.connect,self.variable.get()))
         AppView.connectButton.grid(column=4, row=1)
-
         self.window.mainloop()
+    
+    def getRedSlider():
+        return int(AppView.sliderRed.get())
+
+    def getGreenSlider():
+        return int(AppView.sliderGreen.get())
+
+    def getBlueSlider():
+        return int(AppView.sliderBlue.get())
 
     def isConnected():
         AppView.droplist.configure(state='disabled')

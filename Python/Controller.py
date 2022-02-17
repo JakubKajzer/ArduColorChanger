@@ -15,8 +15,10 @@ class AppController:
             AppController.s.close()
           
         
-    def updateValue(R,G,B):
-        #binRed= round(2.55*R)
-        #binGreen= round(2.55*G)
-        #binBlue= round(2.55*B)
-        print("pizda")
+    def updateValue(self):
+        binRed = round(2.55*View.AppView.getRedSlider())
+        binGreen = round(2.55*View.AppView.getGreenSlider())
+        binBlue = round(2.55*View.AppView.getBlueSlider())
+        print(binRed)
+        print(binGreen)
+        print(binBlue)
