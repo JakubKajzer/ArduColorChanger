@@ -8,7 +8,6 @@ class AppController:
     def connect(portName):
         if View.AppView.connectButton.cget('text') == "Connect":
             AppController.s = serial.Serial(portName,115200)
-            AppController.s.write("000000".encode())
             View.AppView.isConnected()
         else:
             View.AppView.isDisconnected()
@@ -16,9 +15,10 @@ class AppController:
           
         
     def updateValue(self):
-        binRed = round(2.55*View.AppView.getRedSlider())
-        binGreen = round(2.55*View.AppView.getGreenSlider())
-        binBlue = round(2.55*View.AppView.getBlueSlider())
-        print(binRed)
-        print(binGreen)
-        print(binBlue)
+        if View.AppView.connectButton.cget('text') == "Disconnect":
+            binRed = round(2.55*View.AppView.getRedSlider())
+            binGreen = round(2.55*View.AppView.getGreenSlider())
+            binBlue = round(2.55*View.AppView.getBlueSlider())
+            valueToSend="%02X%02X%02X" % (binRed, binGreen, binBlue)
+            if AppController.s.isOpen():
+                AppController.s.write(valueToSend.encode())
