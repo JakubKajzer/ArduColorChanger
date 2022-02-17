@@ -1,5 +1,6 @@
 from tkinter import ttk
 from tkinter import *
+from unicodedata import name
 import serial.tools.list_ports
 from functools import partial
 
@@ -7,7 +8,12 @@ import Controller
 
 class AppView:
     
-    
+    droplist = OptionMenu
+    connectButton = Button
+
+    sliderRed = Scale
+    sliderGreen = Scale
+    sliderBlue = Scale
 
     def refreshPorts(self):
         ports = serial.tools.list_ports.comports()
@@ -32,22 +38,40 @@ class AppView:
         self.variable = StringVar(self.window)
 
         ttk.Label(self.frm, text="Red: ").grid(column=0, row=0)
-        self.sliderRed = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="RED").grid(column=1, row=0)
+
+        AppView.sliderRed = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="RED",
+        command=partial(Controller.AppController.updateValue,
+        AppView.sliderRed.get(),
+        AppView.sliderGreen.get(),
+        AppView.sliderBlue.get()))
+        
+        AppView.sliderRed.grid(column=1, row=0)
 
         ttk.Label(self.frm, text="Green: ").grid(column=0, row=1)
-        self.sliderGreen = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="GREEN").grid(column=1, row=1)
+        AppView.sliderGreen = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="GREEN")
+        AppView.sliderGreen.grid(column=1, row=1)
 
         ttk.Label(self.frm, text="Blue: ").grid(column=0, row=2)
-        self.sliderBlue = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="BLUE").grid(column=1, row=2)
+        AppView.sliderBlue = Scale(self.frm, from_=0, to=100, orient=HORIZONTAL, bg="BLUE")
+        AppView.sliderBlue.grid(column=1, row=2)
 
         self.refreshPorts()
 
         ttk.Label(self.frm, text="Port: ").grid(column=3, row=0)
-        self.droplist = OptionMenu(self.frm, self.variable, *self.portArray).grid(column=4, row=0)
-
-        self.connectButton = Button(self.frm, text="Connect", command=partial(Controller.AppController.connect,self.variable.get())).grid(column=4, row=1)
+        AppView.droplist = OptionMenu(self.frm, self.variable, *self.portArray)
+        AppView.droplist.grid(column=4, row=0)
+        AppView.connectButton = Button(self.frm, text="Connect", command=partial(Controller.AppController.connect,self.variable.get()))
+        AppView.connectButton.grid(column=4, row=1)
 
         self.window.mainloop()
+
+    def isConnected():
+        AppView.droplist.configure(state='disabled')
+        AppView.connectButton.configure(text='Disconnect')
+
+    def isDisconnected():
+        AppView.droplist.configure(state='normal')
+        AppView.connectButton.configure(text='Connect')
 
 
 

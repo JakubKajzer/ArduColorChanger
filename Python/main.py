@@ -1,5 +1,7 @@
 import View
 import Controller
 
-mainGui = View.AppView()
-mainController = Controller.AppController()
+if __name__ == "__main__":
+    mainController = Controller.AppController()
+    mainGui = View.AppView()
+    
