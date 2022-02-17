@@ -2,6 +2,9 @@ from tkinter import ttk
 from tkinter import Tk
 from tkinter import *
 import serial.tools.list_ports
+from functools import partial
+
+from buttonConnect import connect
 
 window = Tk()
 window.geometry("360x150")
@@ -28,7 +31,7 @@ variable = StringVar(window)
 variable.set(portArray[0]) # default value
 w = OptionMenu(frm, variable, *portArray).grid(column=4, row=0)
 
-connectButton = Button(frm, text="Connect").grid(column=4, row=1)
+connectButton = Button(frm, text="Connect", command=partial(connect,variable.get())).grid(column=4, row=1)
 
 
 window.mainloop()
